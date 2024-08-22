@@ -22,6 +22,8 @@ class Zibal:
         
         Returns:
             output: - An object is returned from the zibal class and is reserved for your portal by merchant and you can use this object to create a new payment etc...
+        Raises:
+            TypeError: Raises an error due to invalid entering type of merchant...
         """
 
         if not isinstance(merchant, str):
@@ -51,7 +53,8 @@ class Zibal:
             portal.create_payment(450000, "https://your-url")
             >>> 3726123664    
         Raises:
-            ValueError: Raises an error due to invalid entering merchant or amount or callbackUrl etc...
+            ValueError: Raises an error due to invalid entering value of merchant or amount or callbackUrl etc...
+            TypeError: Raises an error due to invalid entering type of merchant or amount or callbackUrl etc...
 
         """
 

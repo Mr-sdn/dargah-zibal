@@ -21,7 +21,7 @@ class Zibal:
             - To get the merchant, you have to get the zibal port.
 
         Args:
-            merchant: - The merchant id required to communicate with your portal by default you can use the merchant of the zibal website
+            merchant: - The merchant id required to communicate with your portal by default you can use the merchant of the zibal website just for test
         
         Returns:
             output: - An object is returned from the zibal class and is reserved for your portal by merchant and you can use this object to create a new payment etc...
@@ -52,9 +52,9 @@ class Zibal:
         Returns:
             output: - An integer that represents the trackid of each payment and the user can use it to track the payment    
             example:
-            portal = Zibal("zibal")
-            portal.create_payment(450000, "https://your-url")
-            >>> 3726123664    
+            >>> portal = Zibal()
+            >>> portal.create_payment(450000, "https://your-url")
+            3726123664    
         Raises:
             ValueError: Raises an error due to invalid entering value of merchant or amount or callbackUrl etc...
             TypeError: Raises an error due to invalid entering type of merchant or amount or callbackUrl etc...

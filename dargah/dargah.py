@@ -11,7 +11,7 @@ class Zibal:
 
 
     def __init__(self, merchant: str = "zibal") -> None:
-        
+
         """
         Initialize and communication with your portal by merchant.
             - you can get merchant from https://zibal.ir
@@ -24,10 +24,9 @@ class Zibal:
             output: - An object is returned from the zibal class and is reserved for your portal by merchant and you can use this object to create a new payment etc...
         """
 
-        self.merchant = merchant
         if not isinstance(merchant, str):
             raise TypeError(f"Expected 'merchant' to be of type str, but got {type(merchant).__name__}")
-
+        self.merchant = merchant
 
 
     def create_payment(self, amount: float | int, callbackUrl: str, description: str = "", orderId: str = "", mobile: str = "", allowedCards: list[str] = [], ledgerId: str = "", nationalCode: str = "") -> int:
@@ -125,8 +124,3 @@ class Zibal:
     def __json_to_dict(response: requests.Response) -> dict:
         info = json.loads(response.text)
         return info
-
-
-portal = Zibal("zibal")
-payment1 = portal.create_payment(450000, 'hts://help.zibal.ir/IPG/API/')
-print(payment1)

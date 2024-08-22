@@ -2,11 +2,14 @@ import requests
 import json
 
 class Zibal:
+    
     """
         A class to communicate with the zibal portal and perform various operations such as payment and transaction enquiry etc...
     
-    Methods
-    -------    
+    **Methods**
+
+        - create_payment: Create a new Payment Order
+
     """
 
 
@@ -119,8 +122,35 @@ class Zibal:
         
         elif result == 114:
             raise ValueError("The national code is invalid !")
+
+
+    def start_payment(self, trackId: int) -> str:
+
+        """
+        You can get the payment link by placing the trackId
+        Args:
+            trackId: - The payment tracking ID you received from the create_payment method
+        Returns:
+            output: - The payment link is returned as an output and you can pay by entering the link
+            example:
+            >>> portal = Zibal()
+            >>> trackId = portal.create_payment(45000, "https://your-callback-url")
+            >>> payment_link = portal.start_payment(trackId)
+            >>> payment_link
+            https://gateway.zibal.ir/start/3726418593
+
+        """
+
+        if not isinstance(trackId, int):
+            raise TypeError(f"Expected 'trackId' to be of type int, but got {type(trackId).__name__}")
         
+        return f"https://gateway.zibal.ir/start/{trackId}"
+    
 
     def __json_to_dict(response: requests.Response) -> dict:
         info = json.loads(response.text)
         return info
+    
+
+
+

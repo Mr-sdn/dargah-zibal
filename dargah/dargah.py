@@ -1,6 +1,6 @@
 import requests
 import json
-
+import time
 class Zibal:
     
     """
@@ -150,10 +150,49 @@ class Zibal:
         return f"https://gateway.zibal.ir/start/{trackId}"
     
 
+    def verify_payment(self, trackId: int) -> dict:
+
+        """
+        Once the payment status change has been sent to your callbackUrl and you are sure that the payment has been made you can confirm and close the payment
+        - It is made to ensure that you receive information and end the order payment process
+        Args:
+            trackId: - The payment tracking ID you received from the create_payment method
+        Returns:
+                output: - If the payment confirmation is successfully completed, the payment information will be sent as output. And if it's not successful, False will be returned.
+                    The output is a dict object containing the keys:
+                    - paidAt: Order payment date-in ISODate format(if successful)
+                    - cardNumber: Payment card number (masked)
+                    - status: Payment status
+                    - amount: Order amount (in rials)
+                    ....
+        Raises:
+            TypeError: Raises an error due to invalid entering value of trackId
+        """
+
+        if not isinstance(trackId, int):
+            raise TypeError(f"Expected 'trackId' to be of type int, but got {type(trackId).__name__}")
+        
+        url = "https://gateway.zibal.ir/v1/verify"
+        body = {
+            "merchant": self.merchant,
+            "trackId":trackId
+        }
+
+        response = requests.post(url, json = body)
+        info = Zibal.__json_to_dict(response)
+        result = info["result"]
+
+        if result == 100:
+            return info
+        
+        elif result == 202:
+            return False
+        
+        elif result == 203:
+            raise ValueError("tarakId is invalid")
+
+
     def __json_to_dict(response: requests.Response) -> dict:
         info = json.loads(response.text)
         return info
     
-
-
-

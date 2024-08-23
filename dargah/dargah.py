@@ -5,7 +5,7 @@ class Zibal:
     
     """
         A class to communicate with the zibal portal and perform various operations such as payment and transaction enquiry etc...
-    
+
     **Methods**
 
         - create_payment: Create a new Payment Order
@@ -153,7 +153,7 @@ class Zibal:
         return f"https://gateway.zibal.ir/start/{trackId}"
     
 
-    def verify_payment(self, trackId: int) -> dict:
+    def verify_payment(self, trackId: int) -> dict | bool:
 
         """
         Once the payment status change has been sent to your callbackUrl and you are sure that the payment has been made you can confirm and close the payment
@@ -169,7 +169,8 @@ class Zibal:
                     - amount: Order amount (in rials)
                     ....
         Raises:
-            TypeError: Raises an error due to invalid entering value of trackId
+            ValueError: Raises an error due to invalid entering value of trackId
+            TypeError: Raises an error due to invalid entering type of trackId
         """
 
         if not isinstance(trackId, int):
@@ -223,7 +224,7 @@ class Zibal:
         url = "https://gateway.zibal.ir/v1/inquiry"
         body = {
             "merchant": self.merchant,
-            "trackId":trackId
+            "trackId": trackId
         }
 
         response = requests.post(url, json = body)
@@ -240,10 +241,3 @@ class Zibal:
         info = json.loads(response.text)
         return info
     
-
-portal = Zibal()
-trackId = portal.create_payment(111111, "https://sad","dfsf", "orderid", "093044", ["ssad"], "asd", "0927783495")
-link = portal.start_payment(trackId)
-print(link)
-f = portal.verify_payment(trackId)
-print(portal.payment_report(trackId))

@@ -9,6 +9,9 @@ class Zibal:
     **Methods**
 
         - create_payment: Create a new Payment Order
+        - start_payment: get the payment link
+        - verify_payment: confirm and close the payment
+        - payment_report: information about a payment
 
     """
 
@@ -192,7 +195,55 @@ class Zibal:
             raise ValueError("tarakId is invalid")
 
 
+    def payment_report(self, trackId: int) -> dict:
+
+        """
+        You can use this method whenever you want to have complete information about a payment information such as the date of creation of the payment or the date of payment of the order and the payment status etc
+        Args:
+            trackId: - The payment trackId you want to see the payment report        
+        Returns:
+            output: 
+                - If the payment trackId is correct, the payment information will be sent as output. And if it's not true, will be sent ValueError
+                The output is a dict object containing the keys:
+                - createdAt: Date of order creation - in ISODate format (if successful payment)
+                - paidAt: Payment date - in ISODate format(if successful payment)
+                - verifiedAt: Date of order confirmation-in isodate format (if successful payment)
+                - cardNumber: Payment card number (masked)
+                - status: Payment status
+                - amount: Order am
+                ....
+        Raises:
+            ValueError: Raises an error due to invalid entering value of trackId
+            TypeError: Raises an error due to invalid entering type of trackId
+        """
+
+        if not isinstance(trackId, int):
+            raise TypeError(f"Expected 'trackId' to be of type int, but got {type(trackId).__name__}")
+        
+        url = "https://gateway.zibal.ir/v1/inquiry"
+        body = {
+            "merchant": self.merchant,
+            "trackId":trackId
+        }
+
+        response = requests.post(url, json = body)
+        info = Zibal.__json_to_dict(response)
+        result = info["result"]
+
+        if result == 100:
+            return info
+        
+        elif result == 203:
+            raise ValueError("tarakId is invalid !")
+
     def __json_to_dict(response: requests.Response) -> dict:
         info = json.loads(response.text)
         return info
     
+
+portal = Zibal()
+trackId = portal.create_payment(111111, "https://sad","dfsf", "orderid", "093044", ["ssad"], "asd", "0927783495")
+link = portal.start_payment(trackId)
+print(link)
+f = portal.verify_payment(trackId)
+print(portal.payment_report(trackId))

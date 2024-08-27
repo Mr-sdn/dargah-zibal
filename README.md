@@ -52,7 +52,7 @@ link = portal.start_payment(trackId)
 | success  | در صورت موفقیت‌آمیز بودن تراکنش ١، در غیر این‌صورت ٠ می‌باشد.            |
 | trackId  | شناسه پیگیری جلسه‌ی پرداخت                                                |
 | orderId  | شناسه سفارش ارسال شده در هنگام درخواست پرداخت (در صورت ارسال)           |
-| status   | وضعیت پرداخت (از طریق [جدول وضعیت‌ها](status-table#) می‌توانید مقادیر status را مشاهده نمایید) |
+| status   | وضعیت پرداخت (از طریق جدول وضعیت‌ها می‌توانید مقادیر status را مشاهده نمایید) |
 
 
 **نمونه:** https://yourcallbackurl.com/callback?trackId=9900&success=1&status=2&orderId=1
